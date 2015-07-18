@@ -6,8 +6,10 @@ require 'erb'
 `mkdir -p env`
 `mkdir -p .test`
 
-@cydata = "./.test/data"
-@cyaddie = "./.test/addie"
+@cydata = File.expand_path("./.test/data")
+@cyaddie = File.expand_path("./.test/addie")
+
+genonly = false
 
 options = {}
 OptionParser.new do |opts|
@@ -21,20 +23,26 @@ OptionParser.new do |opts|
     @cyaddie = File.expand_path(dir)
   end
 
+  opts.on('--genonly', "only generate the vagrant file, do not launch environment") do |dir|
+    genonly = true
+  end
+
 end.parse!
 
 system(
-  'git clone git@github.com:cycps/data #{ENV["CYDATA"]}'
+  "git clone git@github.com:cycps/data #{@cydata}"
 ) unless File.exist?(@cydata)
 
 system(
-  'git clone git@github.com:cycps/data #{ENV["CYADDIE"]}'
+  "git clone git@github.com:cycps/addie #{@cyaddie}"
 ) unless File.exist?(@cyaddie)
 
 
 erb = ERB.new(File.read('Vagrantfile.erb'))
 File.write('env/Vagrantfile', erb.result())
 
-Dir.chdir "env"
-system('vagrant up')
+if !genonly
+  Dir.chdir "env"
+  system('vagrant up')
+end
 
