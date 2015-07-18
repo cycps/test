@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+    
+#hostnamectl set-hostname cydata
+
+Vagrant.configure(2) do |config|
+
+  config.vm.box = "boxcutter/ubuntu1504"
+  config.vm.network "public_network"
+
+  config.vm.define "data" do |data|
+    data.vm.hostname = "cydata0"
+    data.vm.synced_folder "<%= @cydata %>/sql", "/cypress/data/sql"
+    data.vm.provision "shell", inline: <<-SHELL
+      sudo apt-get update
+      sudo apt-get install -y vim tmux postgresql postgresql-contrib postgresql-doc
+      echo "making cyp dir"
+      mkdir -p /home/vagrant/cypress/log
+      echo "dbscript"
+      sudo -E /cypress/data/sql/createCypDB.sh
+    SHELL
+  end
+
+  config.vm.define "svc" do |svc|
+    svc.vm.hostname = "addie"
+    svc.vm.synced_folder "<%= @cyaddie %>", "/home/vagrant/go/src/github.com/cycps/addie"
+    svc.vm.provision "shell", inline: <<-SHELL
+      sudo apt-get update
+      sudo apt-get install -y vim tmux golang
+      echo "installing go"
+      mkdir -p /home/vagrant/go
+      echo "export GOPATH=/home/vagrant/go" >> /home/vagrant/.bashrc
+      echo "export PATH=$PATH:/home/vagrant/go/bin" >> /home/vagrant/.bashrc
+      source /home/vagrant/.bashrc  
+      echo "installing addie"
+      GOPATH=/home/vagrant/go go install github.com/cycps/addie
+      echo "running addie"
+      PATH=$PATH:/home/vagrant/go/bin addie &
+    SHELL
+  end
+  
+
+end
