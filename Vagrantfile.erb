@@ -55,6 +55,10 @@ Vagrant.configure(2) do |config|
     config.vm.provision :file, 
       source: '../run_dredd_api_tests.sh', 
       destination: '/home/vagrant/apitest/run_dredd_api_tests.sh'
+      
+      config.vm.provision :file, 
+      source: '../hookstls.js', 
+      destination: '/home/vagrant/apitest/hookstls.js'
 
     cli.vm.provision "shell", privileged: false, inline: <<-SHELL
       $HOME/.cypress/provision.sh
