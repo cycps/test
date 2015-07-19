@@ -5,4 +5,4 @@ sudo sed -i 's/http:\/\/us.archive.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /et
 sudo sed -i 's/http:\/\/security.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get install -y vim tmux nodejs-legacy npm
-sudo npm install -g dredd
+hash dredd 2>/dev/null || sudo npm install -g dredd 
