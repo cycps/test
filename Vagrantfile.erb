@@ -42,6 +42,8 @@ Vagrant.configure(2) do |config|
   config.vm.define "client" do |cli|
     cli.vm.network "public_network", ip: "192.168.1.203"
     cli.vm.hostname = "client"
+    #TODO this is bad, we just need to provision stuff from cyaddie not mount it
+    #because the runtime puts stuff here which propagates it back into the git tracked source
     cli.vm.synced_folder "<%= @cyaddie %>/spec", "/home/vagrant/apitest"
 
     cli.vm.provision "shell", privileged: false, inline: <<-SHELL
