@@ -8,9 +8,11 @@ sudo apt-get install -y vim tmux git golang
 echo "installing go"
 echo "export GOPATH=/home/vagrant/go" >> /home/vagrant/.bashrc
 echo "export PATH=$PATH:/home/vagrant/go/bin" >> /home/vagrant/.bashrc
+mkdir -p /home/vagrant/.cypress/keys
+cp /home/vagrant/go/src/github.com/cycps/addie/devkeys/* /home/vagrant/.cypress/keys/
 source /home/vagrant/.bashrc  
 echo "installing addie"
-GOPATH=/home/vagrant/go go get github.com/lib/pq
+GOPATH=/home/vagrant/go go get github.com/lib/pq github.com/julienschmidt/httprouter
 GOPATH=/home/vagrant/go go install github.com/cycps/addie
 echo "running addie"
 PATH=$PATH:/home/vagrant/go/bin addie &
