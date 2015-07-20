@@ -43,22 +43,23 @@ Vagrant.configure(2) do |config|
     cli.vm.network "public_network", ip: "192.168.1.203"
     cli.vm.hostname = "client"
     #TODO this is bad, we just need to provision stuff from cyaddie not mount it
-    #because the runtime puts stuff here which propagates it back into the git tracked source
+    #because the runtime puts stuff here which propagates it back into the git
+    #tracked source
     cli.vm.synced_folder "<%= @cyaddie %>/spec", "/home/vagrant/apitest"
 
     cli.vm.provision "shell", privileged: false, inline: <<-SHELL
       sudo chown -R vagrant:vagrant $HOME/.cypress
     SHELL
 
-    config.vm.provision :file, 
+    cli.vm.provision :file, 
       source: '../client_provision.sh', 
       destination: '/home/vagrant/.cypress/provision.sh'
       
-    config.vm.provision :file, 
+    cli.vm.provision :file, 
       source: '../run_dredd_api_tests.sh', 
       destination: '/home/vagrant/apitest/run_dredd_api_tests.sh'
       
-      config.vm.provision :file, 
+    cli.vm.provision :file, 
       source: '../hookstls.js', 
       destination: '/home/vagrant/apitest/hookstls.js'
 
@@ -67,6 +68,24 @@ Vagrant.configure(2) do |config|
     SHELL
   end
 
+  config.vm.define "web" do |web|
+    web.vm.network "public_network", ip: "192.168.1.204"
+    web.vm.hostname = "web"
+    
+    web.vm.synced_folder "<%= @cyweb %>", "/home/vagrant/.cypress/web"
+
+    web.vm.provision "shell", privileged: false, inline: <<-SHELL
+      sudo chown -R vagrant:vagrant $HOME/.cypress
+    SHELL
+    
+    web.vm.provision :file, 
+      source: '../web_provision.sh', 
+      destination: '/home/vagrant/.cypress/provision.sh'
+
+    web.vm.provision "shell", privileged: false, inline: <<-SHELL
+      $HOME/.cypress/provision.sh
+    SHELL
+  end
     
   
 

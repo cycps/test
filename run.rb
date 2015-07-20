@@ -8,6 +8,7 @@ require 'erb'
 
 @cydata = File.expand_path("./.test/data")
 @cyaddie = File.expand_path("./.test/addie")
+@cyweb = File.expand_path("./.test/web")
 
 genonly = false
 
@@ -21,6 +22,10 @@ OptionParser.new do |opts|
 
   opts.on('--addie [dir]', String, "cycps/addie source directory") do |dir| 
     @cyaddie = File.expand_path(dir)
+  end
+  
+  opts.on('--web [dir]', String, "cycps/web source directory") do |dir| 
+    @cyweb = File.expand_path(dir)
   end
 
   opts.on('--genonly', "only generate the vagrant file, do not launch environment") do |dir|
@@ -36,6 +41,10 @@ system(
 system(
   "git clone git@github.com:cycps/addie #{@cyaddie}"
 ) unless File.exist?(@cyaddie)
+
+system(
+  "git clone git@github.com:cycps/web #{@cyweb}"
+) unless File.exist?(@cyweb)
 
 
 erb = ERB.new(File.read('Vagrantfile.erb'))
