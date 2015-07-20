@@ -9,3 +9,5 @@ sudo apt-get install -y vim tmux nginx
 sudo mv /etc/nginx/nginx.conf /etc/nginx/original_nginx.conf
 sudo ln -s $HOME/.cypress/web/conf/nginx.conf /etc/nginx/nginx.conf
 
+sudo nginx -s reload
+
