@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+mkdir -p /home/vagrant/go/src/github.com/cycps
+sudo ln -s /home/vagrant/.cypress/addie /home/vagrant/go/src/github.com/cycps/addie
+
 sudo chown -R vagrant:vagrant /home/vagrant/go
 sudo sed -i 's/http:\/\/us.archive.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /etc/apt/sources.list
 sudo sed -i 's/http:\/\/security.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /etc/apt/sources.list
@@ -13,6 +16,6 @@ cp /home/vagrant/go/src/github.com/cycps/addie/devkeys/* /home/vagrant/.cypress/
 source /home/vagrant/.bashrc  
 echo "installing addie"
 GOPATH=/home/vagrant/go go get github.com/lib/pq github.com/julienschmidt/httprouter
-GOPATH=/home/vagrant/go go install github.com/cycps/addie
-echo "running addie"
-PATH=$PATH:/home/vagrant/go/bin addie &
+GOPATH=/home/vagrant/go go install github.com/cycps/addie/design
+echo "running design"
+PATH=$PATH:/home/vagrant/go/bin design &
