@@ -16,5 +16,5 @@ source /home/vagrant/.bashrc
 echo "installing addie"
 GOPATH=/home/vagrant/go go get github.com/lib/pq github.com/julienschmidt/httprouter
 GOPATH=/home/vagrant/go go install github.com/cycps/addie/design
-echo "running design"
-PATH=$PATH:/home/vagrant/go/bin design &
+#echo "running design"
+#PATH=$PATH:/home/vagrant/go/bin design &
