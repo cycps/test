@@ -1,32 +1,28 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
     
-#hostnamectl set-hostname cydata
-
 Vagrant.configure(2) do |config|
 
   config.vm.box = "boxcutter/ubuntu1504"
     
   config.vm.network "private_network", type: "dhcp"
+  
+  #config.vm.provision "shell", privileged: false, inline: <<-SHELL
+  #  mkdir -p $HOME/.cypress
+  #SHELL
 
-  config.vm.synced_folder "<%= @cydata %>", "/home/vagrant/.cypress/data", type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
-  config.vm.synced_folder "<%= @cyaddie %>", "/home/vagrant/.cypress/addie", type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
-  config.vm.synced_folder "<%= @cyweb %>", "/home/vagrant/.cypress/web", type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
+  config.vm.synced_folder "<%= @cydata %>", "/home/vagrant/.cypress/data" #type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
+  config.vm.synced_folder "<%= @cyaddie %>", "/home/vagrant/.cypress/addie" #type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
+  config.vm.synced_folder "<%= @cyweb %>", "/home/vagrant/.cypress/web" #type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
 
+  #NO! one way street host -> vm
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    sudo chown -R vagrant:vagrant $HOME/.cypress
+    sudo chown vagrant:vagrant $HOME/.cypress
   SHELL
 
   config.vm.define "data" do |data|
     data.vm.network "public_network", ip: "192.168.1.201"
     data.vm.hostname = "cydata0"
-    #data.vm.synced_folder "<%= @cydata %>/sql", "/home/vagrant/.cypress/data/sql", type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
-
-    #data.vm.provider :virtualbox do |_, _|
-     # data.vm.provision "shell", privileged: false, inline: <<-SHELL
-     #   sudo chown -R vagrant:vagrant $HOME/.cypress
-     # SHELL
-    #end
 
     data.vm.provision :file, 
       source: '../data_provision.sh', 
@@ -40,7 +36,6 @@ Vagrant.configure(2) do |config|
   config.vm.define "svc" do |svc|
     svc.vm.network "public_network", ip: "192.168.1.202"
     svc.vm.hostname = "addie"
-    #svc.vm.synced_folder "<%= @cyaddie %>", "/home/vagrant/go/src/github.com/cycps/addie", type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
 
     svc.vm.provision :file, 
       source: '../svc_provision.sh', 
@@ -54,27 +49,10 @@ Vagrant.configure(2) do |config|
   config.vm.define "client" do |cli|
     cli.vm.network "public_network", ip: "192.168.1.203"
     cli.vm.hostname = "client"
-    #TODO this is bad, we just need to provision stuff from cyaddie not mount it
-    #because the runtime puts stuff here which propagates it back into the git
-    #tracked source
-    #cli.vm.synced_folder "<%= @cyaddie %>", "/home/vagrant/apitest", type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel'], :mount_options => ['resvport']
-
-    #cli.vm.provision "shell", privileged: false, inline: <<-SHELL
-    #  mkdir -p $HOME/.cypress
-    #  sudo chown -R vagrant:vagrant $HOME/.cypress
-    #SHELL
 
     cli.vm.provision :file, 
       source: '../client_provision.sh', 
       destination: '/home/vagrant/.cypress/provision.sh'
-      
-    cli.vm.provision :file, 
-      source: '../run_dredd_api_tests.sh', 
-      destination: '/home/vagrant/apitest/run_dredd_api_tests.sh'
-      
-    cli.vm.provision :file, 
-      source: '../hookstls.js', 
-      destination: '/home/vagrant/apitest/hookstls.js'
 
     cli.vm.provision "shell", privileged: false, inline: <<-SHELL
       $HOME/.cypress/provision.sh
@@ -85,12 +63,6 @@ Vagrant.configure(2) do |config|
     web.vm.network "public_network", ip: "192.168.1.204"
     web.vm.hostname = "web"
     
-    #web.vm.synced_folder "<%= @cyweb %>", "/home/vagrant/.cypress/web", type: 'nfs', bsd__nfs_options: ['alldirs', 'maproot=root:wheel']
-
-    #web.vm.provision "shell", privileged: false, inline: <<-SHELL
-    #  sudo chown -R vagrant:vagrant $HOME/.cypress
-    #SHELL
-    
     web.vm.provision :file, 
       source: '../web_provision.sh', 
       destination: '/home/vagrant/.cypress/provision.sh'
@@ -100,6 +72,4 @@ Vagrant.configure(2) do |config|
     SHELL
   end
     
-  
-
 end
