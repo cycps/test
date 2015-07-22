@@ -50,6 +50,15 @@ system(
 erb = ERB.new(File.read('Vagrantfile.erb'))
 File.write('env/Vagrantfile', erb.result())
 
+puts "raking web"
+here = Dir.pwd
+Dir.chdir(@cyweb)
+system('rake')
+Dir.chdir(here)
+
+
+
+
 if !genonly
   Dir.chdir "env"
   system('vagrant up')
