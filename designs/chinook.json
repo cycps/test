@@ -1,0 +1,179 @@
+{
+  "name": "chinook",
+  "elements": [
+    {
+      "type": "Sax",
+      "object": {
+        "name": "sax0",
+        "sys": "root",
+        "design": "chinook",
+        "interfaces": {
+          "ifx0": {
+            "name": "ifx0",
+            "capacity": 1000,
+            "latency": 0
+          },
+          "ifx1": {
+            "name": "ifx1",
+            "capacity": 1000,
+            "latency": 0
+          }
+        },
+        "position": {
+          "x": -190.50002,
+          "y": 90.49999,
+          "z": 50
+        },
+        "sense": "w(30)",
+        "actuate": "tau(10, 0.7)"
+      }
+    },
+    {
+      "type": "Plink",
+      "object": {
+        "name": "link0",
+        "sys": "root",
+        "design": "chinook",
+        "endpoints": [
+          {
+            "name": "rtr",
+            "sys": "root",
+            "design": "chinook",
+            "ifname": ""
+          },
+          {
+            "name": "sax0",
+            "sys": "root",
+            "design": "chinook"
+          }
+        ],
+        "bindings": [
+          "w, tau",
+          "w, tau"
+        ],
+        "rtr": "w, tau",
+        "sax0": "w, tau"
+      }
+    },
+    {
+      "type": "Computer",
+      "object": {
+        "name": "rtr_ctl",
+        "sys": "root",
+        "design": "chinook",
+        "interfaces": {
+          "ifx0": {
+            "name": "ifx0",
+            "capacity": 1000,
+            "latency": 0
+          }
+        },
+        "position": {
+          "x": -94.50001,
+          "y": 129.5,
+          "z": 50
+        },
+        "os": "Ubuntu1504-54-STD",
+        "Start_script": "rotorControl"
+      }
+    },
+    {
+      "type": "Switch",
+      "object": {
+        "name": "switch0",
+        "sys": "root",
+        "design": "chinook",
+        "interfaces": {
+          "ifx0": {
+            "name": "ifx0",
+            "capacity": 1000,
+            "latency": 0
+          },
+          "ifx1": {
+            "name": "ifx1",
+            "capacity": 1000,
+            "latency": 0
+          }
+        },
+        "capacity": 1000,
+        "latency": 0,
+        "position": {
+          "x": -147.50002,
+          "y": 128.5,
+          "z": 50
+        }
+      }
+    },
+    {
+      "type": "Link",
+      "object": {
+        "name": "link1",
+        "sys": "root",
+        "design": "chinook",
+        "path": null,
+        "capacity": 1000,
+        "latency": 0,
+        "endpoints": [
+          {
+            "name": "sax0",
+            "sys": "root",
+            "design": "chinook",
+            "ifname": "ifx1"
+          },
+          {
+            "name": "switch0",
+            "sys": "root",
+            "design": "chinook",
+            "ifname": "ifx0"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Link",
+      "object": {
+        "name": "link2",
+        "sys": "root",
+        "design": "chinook",
+        "path": null,
+        "capacity": 1000,
+        "latency": 0,
+        "endpoints": [
+          {
+            "name": "switch0",
+            "sys": "root",
+            "design": "chinook",
+            "ifname": "ifx1"
+          },
+          {
+            "name": "rtr_ctl",
+            "sys": "root",
+            "design": "chinook",
+            "ifname": "ifx0"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Phyo",
+      "object": {
+        "name": "rtr",
+        "sys": "root",
+        "design": "chinook",
+        "position": {
+          "x": -227.50002,
+          "y": 89.49999,
+          "z": 50
+        },
+        "model": "Rotor",
+        "params": "H = 2.5"
+      }
+    }
+  ],
+  "models": [
+    {
+      "name": "Rotor",
+      "equations": "w' = tau - H*w^2\ntheta' = w"
+    }
+  ]
+}
