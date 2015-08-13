@@ -7,7 +7,7 @@ sudo sed -i 's/http:\/\/us.archive.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /et
 sudo sed -i 's/http:\/\/security.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get install -y vim tmux git golang
-sudo apt-get install -y build-essential clang cmake ninja-build libc++1 libc++abi1
+sudo apt-get install -y build-essential clang cmake ninja-build libc++1 libc++abi1 libc++-dev
 echo "installing go"
 echo "export GOPATH=/home/vagrant/go" >> /home/vagrant/.bashrc
 echo "export PATH=$PATH:/home/vagrant/go/bin" >> /home/vagrant/.bashrc
@@ -35,9 +35,9 @@ cd ..
 sudo apt-get install -y libbz2-dev
 tar xzf boost_1_58_0.tar.gz
 cd boost_1_58_0
-./bootstrap.sh toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" --with-libraries=program_options,filesystem,system
-./b2 toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" -j 4 stage release --without-python
-sudo ./b2 install toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" --without-python
+./bootstrap.sh --with-toolset=clang --with-libraries=program_options,filesystem,system mcxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" 
+./b2 toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" -j 4 stage release 
+sudo ./b2 install toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" 
 cd ..
 
 tar xzf sundials-2.5.0.tar.gz
