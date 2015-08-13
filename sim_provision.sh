@@ -22,7 +22,7 @@ cd ..
 sudo apt-get install -y libbz2-dev
 tar xzf boost_1_58_0.tar.gz
 cd boost_1_58_0
-./bootstrap.sh
+./bootstrap.sh toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++"
 ./b2 toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" -j 4 stage release --without-python
 sudo ./b2 install toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" --without-python
 cd ..
