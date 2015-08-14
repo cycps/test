@@ -42,3 +42,4 @@ cmake .. -G Ninja
 ninja
 sudo ninja install
 
+echo "export CYPRESS_HOME=/home/vagrant/.cypress/sim" >> /home/vagrant/.bashrc

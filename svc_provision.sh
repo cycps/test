@@ -54,3 +54,9 @@ cd build
 cmake .. -G Ninja
 ninja
 sudo ninja install
+
+echo "export CYPRESS_HOME=/home/vagrant/.cypress/sim" >> /home/vagrant/.bashrc
+echo "export LD_LIBRARY_PATH=/usr/local/lib" >> /home/vagrant/.bashrc
+
+sudo mkdir /cypress
+sudo chown vagrant:vagrant /cypress
