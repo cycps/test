@@ -16,7 +16,9 @@ cp /home/vagrant/go/src/github.com/cycps/addie/devkeys/* /home/vagrant/.cypress/
 source /home/vagrant/.bashrc  
 echo "installing addie"
 GOPATH=/home/vagrant/go go get github.com/lib/pq github.com/julienschmidt/httprouter
+GOPATH=/home/vagrant/go go get github.com/deter-project/go-spi/spi
 GOPATH=/home/vagrant/go go install github.com/cycps/addie/go-addie
+GOPATH=/home/vagrant/go go install github.com/cycps/addie/gatekeeper
 #echo "running design"
 #PATH=$PATH:/home/vagrant/go/bin design &
 
