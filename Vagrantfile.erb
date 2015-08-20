@@ -42,6 +42,7 @@ Vagrant.configure(2) do |config|
     svc.vm.provision "shell", privileged: false, inline: <<-SHELL
       $HOME/.cypress/provision.sh
     SHELL
+    svc.vm.synced_folder "cyroot", "/cypress"
   end
 
   config.vm.define "client" do |cli|
@@ -81,6 +82,9 @@ Vagrant.configure(2) do |config|
     sim.vm.provision "shell", privileged: false, inline: <<-SHELL
       $HOME/.cypress/provision.sh
     SHELL
+
+    svc.vm.synced_folder "cyroot", "/cypress"
+
   end
     
 end
