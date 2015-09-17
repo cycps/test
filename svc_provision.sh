@@ -2,6 +2,7 @@
 
 mkdir -p /home/vagrant/go/src/github.com/cycps
 sudo ln -s /home/vagrant/.cypress/addie /home/vagrant/go/src/github.com/cycps/addie
+sudo ln -s /home/vagrant/.cypress/xptools /home/vagrant/go/src/github.com/cycps/xptools
 
 sudo sed -i 's/http:\/\/us.archive.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /etc/apt/sources.list
 sudo sed -i 's/http:\/\/security.ubuntu.com/http:\/\/ubuntu.eecs.wsu.edu/' /etc/apt/sources.list

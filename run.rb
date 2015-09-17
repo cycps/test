@@ -10,6 +10,7 @@ require 'erb'
 @cyaddie = File.expand_path("./.test/addie")
 @cyweb = File.expand_path("./.test/web")
 @cysim = File.expand_path("./.test/sim")
+@cyxptools = File.expand_path("./.test/xptools")
 
 genonly = false
 
@@ -31,6 +32,10 @@ OptionParser.new do |opts|
 
   opts.on('--sim [dir]', String, "cycps/sim source directory") do |dir|
     @cysim = File.expand_path(dir)
+  end
+  
+  opts.on('--xptools [dir]', String, "cycps/xptools source directory") do |dir|
+    @cyxptools = File.expand_path(dir)
   end
 
   opts.on('--genonly', "only generate the vagrant file, do not launch environment") do |dir|
