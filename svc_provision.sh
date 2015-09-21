@@ -41,7 +41,7 @@ tar xzf boost_1_58_0.tar.gz
 cd boost_1_58_0
 ./bootstrap.sh --with-toolset=clang --with-libraries=program_options,filesystem,system mcxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" 
 ./b2 toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" -j 4 stage release 
-sudo ./b2 install toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++" 
+sudo ./b2 install toolset=clang cxxflags="-std=c++1y -stdlib=libc++" linkflags="-stdlib=libc++"
 cd ..
 
 tar xzf sundials-2.5.0.tar.gz
@@ -58,6 +58,8 @@ cd build
 cmake .. -G Ninja
 ninja
 sudo ninja install
+
+sudo apt-get install libyaml-cpp0.5 libyaml-cpp-dev
 
 echo "export CYPRESS_HOME=/home/vagrant/.cypress/sim" >> /home/vagrant/.bashrc
 echo "export LD_LIBRARY_PATH=/usr/local/lib" >> /home/vagrant/.bashrc
